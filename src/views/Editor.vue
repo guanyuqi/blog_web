@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="editor">
     <router-link to="/">
       <h2>主页</h2>
     </router-link>
@@ -8,7 +8,12 @@
         <div id="editor-container"></div>
         <button @click="getEditorData">获取内容</button>
       </div>
-      <div class="preview" ref="preview"></div>
+      <div
+        class="preview"
+        id="preview"
+        ref="preview"
+        v-html="this.editorData"
+      ></div>
     </div>
   </div>
 </template>
@@ -36,7 +41,7 @@ export default {
   methods: {
     getEditorData() {
       console.log(this.editorData)
-      this.$refs.preview.innerHTML = this.editorData
+      /* this.$refs.preview.innerHTML = this.editorData */
     }
   }
 }
@@ -50,29 +55,35 @@ export default {
     height: 100%;
   }
 }
-.preview {
-  padding: 10px;
+#preview {
+  padding: 20px;
   background-color: #f9f9f9;
-  p {
-    color: yellow;
-  }
-  pre {
-    position: relative;
-    padding-left: 10px;
-    counter-reset: linenumber;
-    word-wrap: normal;
-    word-break: break-all;
-    white-space: pre;
-    overflow-x: scroll;
-    overscroll-behavior-x: contain;
-    margin-top: 0;
-    margin-bottom: 20px;
-    border-radius: 4px;
-    z-index: 0;
-    padding: 1em;
-    line-height: 1.5;
-    color: #ccc;
-    background: #2d2d2d;
+}
+</style>
+<style lang="scss">
+.editor {
+  .preview {
+    p {
+      color: #404040 !important;
+    }
+    pre {
+      position: relative;
+      padding-left: 30px;
+      counter-reset: linenumber;
+      word-wrap: normal;
+      word-break: break-all;
+      white-space: pre;
+      overflow-x: scroll;
+      overscroll-behavior-x: contain;
+      margin-top: 0;
+      margin-bottom: 20px;
+      border-radius: 4px;
+      z-index: 0;
+      padding: 1em;
+      line-height: 1.5;
+      color: #ccc;
+      background: #2d2d2d;
+    }
   }
 }
 </style>
