@@ -34,6 +34,7 @@ export default {
     editor.config.onchange = newHtml => {
       this.editorData = newHtml
     }
+    editor.config.uploadImgServer = '/upload-img'
     // 创建编辑器
     editor.create()
     this.editor = editor
