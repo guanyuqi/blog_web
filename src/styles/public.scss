@@ -1,0 +1,132 @@
+/* 颜色变量 */
+$theme-main: #ef6c00;
+$theme-green: #12a899;
+$theme-purple: #543ecd;
+$theme-blue: #0173ff;
+$theme-red: #fe2270;
+$theme-yellow: #fcbc19;
+
+/* 文字基本颜色 */
+/* $text-color: #323232; */ //基本色
+$text-color: #274052;
+$text-color-title: #323232;
+$text-color-grey: #7c8087; //辅助灰色，如加载更多的提示信息
+$text-color-white: #fff; //反色
+$text-color-placeholder: #808080;
+$text-color-disable: #c0c0c0;
+
+/* 文字尺寸 */
+$font-size-mini: 12px;
+$font-size-sm: 14px;
+$font-size-base: 16px;
+$font-size-lg: 18px;
+$font-size-xlg: 24px;
+$font-size-xxlg: 28px;
+
+/* 背景颜色 */
+$bg-color: #ffffff;
+$bg-color-ea: #eaeaea;
+$bg-color-grey: #f4f8ff;
+$bg-color-hover: #f1f1f1; //点击状态颜色
+$bg-color-mask: rgba(0, 0, 0, 0.4); //遮罩颜色
+
+/* 边框颜色 */
+$border-color: #f1f1f1;
+
+/* 圆角 */
+$radius: 5px;
+.radios {
+  border-radius: 5px;
+}
+
+/* 阴影 */
+$shadow-big: 0px 4px 30px 1px #dfe5f1;
+$shadow-base: 0px 4px 16px 1px #dfe5f1;
+$shadow-sm: 0px 4px 8px 1px #dfe5f1;
+.shadow {
+  -moz-box-shadow: 0px 4px 30px 1px #dfe5f1;
+  -webkit-box-shadow: 0px 4px 30px 1px #dfe5f1;
+  box-shadow: 0px 4px 30px 1px #dfe5f1;
+}
+.shadow-lite {
+  -moz-box-shadow: 0px 4px 16px 1px #dfe5f1;
+  -webkit-box-shadow: 0px 4px 16px 1px #dfe5f1;
+  box-shadow: 0px 4px 16px 1px #dfe5f1;
+}
+
+/* flex布局 */
+@mixin flex-base {
+  display: flex;
+}
+@mixin flex-base-center {
+  display: flex;
+  align-items: center;
+}
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+@mixin flex-between-center {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+@mixin flex-around-center {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+@mixin flex-around {
+  display: flex;
+  justify-content: space-around;
+}
+
+@mixin ellipse {
+  word-break: keep-all; /* 不换行 */
+  white-space: nowrap; /* 强制在同一行内显示所有文本,直到文本结束或者遭遇 br 对象。不换行 */
+  overflow: hidden; /* 内容超出宽度时隐藏超出部分的内容 */
+  text-overflow: ellipsis; /* IE 专有属性,当对象内文本溢出时显示省略标记(...) ;需与overflow:hidden;一起使用。*/
+}
+@mixin ellipse2 {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  white-space: normal !important;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  color: $text-color;
+}
+
+/* 公共头部 */
+.type-head {
+  @include flex-between-center;
+  padding: 0 50px;
+
+  .head {
+    font-size: $font-size-base;
+    font-weight: 600;
+    color: $theme-main;
+    .block {
+      display: inline-block;
+      width: 8px;
+      height: 30px;
+      border-radius: 5px;
+      margin-right: 10px;
+      background: linear-gradient(to top, $theme-main, #f9a56a);
+    }
+  }
+  .more {
+    font-size: $font-size-sm;
+    font-weight: 500;
+    color: $text-color-grey;
+  }
+}
+
+/* 行为相关颜色 */
+$uni-color-primary: #007aff;
+$uni-color-success: #4cd964;
+$uni-color-warning: #f0ad4e;
+$uni-color-error: #dd524d;
