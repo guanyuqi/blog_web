@@ -1,9 +1,18 @@
 import axios from 'axios'
-
+import store from '../store'
 //创建axios实例
 var service = axios.create({
   baseURL: 'http://localhost:8000',
   timeout: 50000
+})
+service.interceptors.request.use(config => {
+  let token = store.state.userInfo.token
+  console.log(store.state.userInfo)
+  if (token) {
+    //将token放到请求头发送给服务器,将tokenkey放在请求头中
+    config.headers.Authorization = token
+    return config
+  }
 })
 
 export default {

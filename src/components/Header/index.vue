@@ -24,7 +24,7 @@
           </router-link>
         </div>
       </div>
-      <div class="right-item" v-if="(userInfo = null)">
+      <div class="right-item" v-if="userInfo">
         <div class="add-article">
           <router-link to="/editor">
             <el-button
@@ -52,7 +52,9 @@
         </div>
       </div>
       <div class="login" v-else>
-        <el-button type="primary" size="medium" @click="login"> 登录</el-button>
+        <el-button type="primary" size="medium" @click="openLoginDialog">
+          登录</el-button
+        >
       </div>
     </div>
     <Login></Login>
@@ -67,8 +69,13 @@ export default {
   },
   data() {
     return {
-      dialog_flg: false,
-      userInfo: this.$store.state.userInfo
+      dialog_flg: false
+      /*  userInfo: this.$store.state.userInfo */
+    }
+  },
+  computed: {
+    userInfo: function() {
+      return this.$store.state.userInfo
     }
   },
   methods: {
@@ -78,15 +85,18 @@ export default {
           console.log('in')
           localStorage.setItem('userInfo', null)
           this.$store.dispatch('setUserInfo', null)
+          this.$message({
+            showClose: true,
+            message: '已下线',
+            type: 'success'
+          })
           break
 
         default:
           break
       }
-      console.log(this.$store.state.userInfo)
-      this.$message('click on item ' + command)
     },
-    login() {
+    openLoginDialog() {
       this.$store.dispatch('loginDialog', true)
     }
   }

@@ -84,6 +84,12 @@ export default {
       this.http.post('/login', this.ruleForm).then(res => {
         localStorage.setItem('userInfo', res.data.data)
         this.$store.dispatch('setUserInfo', res.data.data)
+        this.$message({
+          showClose: true,
+          message: '恭喜你，登录成功',
+          type: 'success'
+        })
+        this.close()
       })
     },
     open() {

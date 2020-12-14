@@ -7,7 +7,9 @@
         </el-input>
       </div>
       <div class="editor-container" id="editor-container"></div>
-      <button @click="getEditorData">获取内容</button>
+      <div class="submit">
+        <el-button type="primary" @click="submit">主要按钮</el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -35,9 +37,14 @@ export default {
     this.editor = editor
   },
   methods: {
-    getEditorData() {
-      console.log(this.editorData)
-      /* this.$refs.preview.innerHTML = this.editorData */
+    submit() {
+      let data = {
+        content: this.editorData,
+        title: this.inputTitle
+      }
+      this.http.post('/moment', data).then(res => {
+        console.log(res)
+      })
     }
   }
 }
