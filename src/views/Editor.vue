@@ -1,19 +1,13 @@
 <template>
   <div class="editor">
-    <router-link to="/">
-      <h2>主页</h2>
-    </router-link>
     <div class="container">
-      <div class="editor">
-        <div id="editor-container"></div>
-        <button @click="getEditorData">获取内容</button>
+      <div class="title-input">
+        <el-input placeholder="请输入内容" v-model="inputTitle">
+          <template slot="prepend">文章标题</template>
+        </el-input>
       </div>
-      <div
-        class="preview"
-        id="preview"
-        ref="preview"
-        v-html="this.editorData"
-      ></div>
+      <div class="editor-container" id="editor-container"></div>
+      <button @click="getEditorData">获取内容</button>
     </div>
   </div>
 </template>
@@ -22,6 +16,7 @@ import wangEditor from 'wangeditor'
 export default {
   data() {
     return {
+      inputTitle: '',
       editor: null,
       editorData: '请输入'
     }
@@ -48,17 +43,15 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.container {
-  display: flex;
-  .preview,
-  .editor {
-    flex: 1;
-    height: 100%;
-  }
+.editor {
+  height: 100%;
+  width: 1200px;
+  margin: 0 auto;
+  margin-top: 50px;
+  /* position: absolute; */
 }
-#preview {
-  padding: 20px;
-  background-color: #f9f9f9;
+.editor-container {
+  margin-top: 20px;
 }
 </style>
 <style lang="scss">
