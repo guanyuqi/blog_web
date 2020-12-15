@@ -9,6 +9,10 @@ import Header from './components/Header'
 export default {
   components: {
     Header
+  },
+  created() {
+    let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    this.$store.dispatch('setUserInfo', userInfo)
   }
 }
 </script>

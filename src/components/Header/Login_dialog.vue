@@ -81,16 +81,21 @@ export default {
       })
     },
     login() {
-      this.http.post('/login', this.ruleForm).then(res => {
-        localStorage.setItem('userInfo', res.data.data)
-        this.$store.dispatch('setUserInfo', res.data.data)
-        this.$message({
-          showClose: true,
-          message: '恭喜你，登录成功',
-          type: 'success'
+      this.http
+        .post('/login', this.ruleForm)
+        .then(res => {
+          localStorage.setItem('userInfo', res.data.data)
+          this.$store.dispatch('setUserInfo', res.data.data)
+          this.$message({
+            showClose: true,
+            message: '恭喜你，登录成功',
+            type: 'success'
+          })
+          this.close()
         })
-        this.close()
-      })
+        .catch(err => {
+          console.log(err)
+        })
     },
     open() {
       console.log('我打开了')

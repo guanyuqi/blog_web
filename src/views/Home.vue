@@ -41,10 +41,15 @@ export default {
   },
   methods: {
     getMoment() {
-      this.http.get('/moment?offset=0&size=30').then(res => {
-        console.log(res)
-        this.momentList = res.data.data.momentList
-      })
+      this.http
+        .get('/moment?offset=0&size=30')
+        .then(res => {
+          console.log(res)
+          this.momentList = res.data.data.momentList
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 }

@@ -38,10 +38,9 @@
         <div class="user-info">
           <el-dropdown @command="handleCommand">
             <span class="el-dropdown-link">
-              <img
-                src="https://byhub-1259170065.cos.ap-chengdu.myqcloud.com/avatar/initial.png"
-                alt=""
-              /><i class="el-icon-arrow-down el-icon--right"></i>
+              <img :src="userInfo.avatar" alt="" /><i
+                class="el-icon-arrow-down el-icon--right"
+              ></i>
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="a">个人中心</el-dropdown-item>

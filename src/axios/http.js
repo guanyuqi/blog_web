@@ -5,15 +5,49 @@ var service = axios.create({
   baseURL: 'http://localhost:8000',
   timeout: 50000
 })
-service.interceptors.request.use(config => {
-  let token = store.state.userInfo.token
-  console.log(store.state.userInfo)
-  if (token) {
-    //将token放到请求头发送给服务器,将tokenkey放在请求头中
-    config.headers.Authorization = token
-    return config
+
+/* 请求拦截器 */
+service.interceptors.request.use(
+  config => {
+    if (!store.state.userInfo) {
+      console.log('没有userInfo')
+      return config
+    }
+    console.log('有userInfo')
+    let { token } = store.state.userInfo
+    if (token.length) {
+      config.headers = { Authorization: 'Bearer ' + token }
+      return config
+    }
+  },
+  err => {
+    //请求出错的处理函数
+    return Promise.reject(err)
   }
-})
+)
+
+/* 响应拦截器 */
+service.interceptors.response.use(
+  response => {
+    //拦截响应，做统一处理
+    console.log('进入响应拦截器')
+    console.log(response)
+    if (response.data.status) {
+      switch (response.data.status) {
+        case 401:
+          localStorage.setItem('userInfo', null)
+          store.dispatch('setUserInfo', null)
+          store.dispatch('loginDialog', true)
+          console.log('成功清空')
+      }
+    }
+    return response
+  },
+  error => {
+    console.log('进入响应拦截器')
+    return Promise.reject(error)
+  }
+)
 
 export default {
   //get请求，其他类型请求复制粘贴，修改method
