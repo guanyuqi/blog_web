@@ -7,8 +7,10 @@
           <template slot="prepend">文章标题</template>
         </el-input>
       </div>
+
       <!-- 富文本编辑器 -->
       <div class="editor-container" id="editor-container"></div>
+
       <!-- 标签选择 -->
       <div class="label">
         <p>请选择文章标签</p>
@@ -40,6 +42,29 @@
           >
         </div>
       </div>
+
+      <!-- 图片上传 -->
+      <div class="upload">
+        <p>上传封面图</p>
+        <el-upload
+          class="upload-demo"
+          action="http://localhost:8000/upload/img"
+          :headers="header"
+          :on-preview="handlePreview"
+          :on-success="uploadSuccess"
+          :on-remove="handleRemove"
+          :file-list="fileList"
+          list-type="picture"
+          limit="1"
+          name="img"
+        >
+          <el-button size="small" type="primary">点击上传</el-button>
+          <div slot="tip" class="el-upload__tip">
+            只能上传jpg/png文件，且不超过500kb
+          </div>
+        </el-upload>
+      </div>
+
       <!-- 提交 -->
       <div class="submit">
         <el-button type="primary" @click="submit">主要按钮</el-button>
@@ -49,6 +74,7 @@
 </template>
 <script>
 import wangEditor from 'wangeditor'
+
 export default {
   data() {
     return {
@@ -61,7 +87,17 @@ export default {
       labels: '',
       inputVisible: false,
       addLabelInput: '',
-      addLabelList: []
+      addLabelList: [],
+      /* 文件上传 */
+      fileList: [],
+      imgPath: ''
+    }
+  },
+  computed: {
+    header: function() {
+      return {
+        Authorization: 'Bearer ' + this.$store.state.userInfo.token
+      }
     }
   },
   created() {
@@ -87,7 +123,9 @@ export default {
       })
     },
     submit() {
-      this.http.post('/moment', this.articleForm).then(res => {
+      let data = this.articleForm
+      data.coverImg = this.imgPath
+      this.http.post('/moment', data).then(res => {
         console.log(res)
         if (res.data.code == 0) {
           this.$message({
@@ -146,6 +184,18 @@ export default {
           this.$router.push({ path: '/' })
         }
       })
+    },
+    /* 图片上传相关 */
+    handleRemove(file, fileList) {
+      console.log(file, fileList)
+    },
+    handlePreview(file) {
+      console.log(file)
+    },
+    uploadSuccess(res) {
+      console.log('上传成功')
+      if (res.data.uploadResult.statusCode != 200) return
+      this.imgPath = 'https://' + res.data.uploadResult.Location
     }
   }
 }
@@ -156,14 +206,17 @@ export default {
   width: 1200px;
   margin: 0 auto;
   margin-top: 50px;
+  padding-bottom: 200px;
 }
 
 /* 富文本编辑器 */
 .editor-container {
   margin-top: 20px;
 }
+
 /* 标签选择 */
 .label {
+  margin-top: 50px;
   p {
     color: $text-color;
   }
@@ -192,6 +245,14 @@ export default {
       margin-left: 10px;
       vertical-align: bottom;
     }
+  }
+}
+
+/* 图片上传 */
+.upload {
+  margin-top: 50px;
+  p {
+    color: $text-color;
   }
 }
 
