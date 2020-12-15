@@ -10,10 +10,8 @@ var service = axios.create({
 service.interceptors.request.use(
   config => {
     if (!store.state.userInfo) {
-      console.log('没有userInfo')
       return config
     }
-    console.log('有userInfo')
     let { token } = store.state.userInfo
     if (token.length) {
       config.headers = { Authorization: 'Bearer ' + token }
@@ -30,10 +28,8 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     //拦截响应，做统一处理
-    console.log('进入响应拦截器')
-    console.log(response)
-    if (response.data.status) {
-      switch (response.data.status) {
+    if (response.data.code) {
+      switch (response.data.code) {
         case 401:
           localStorage.setItem('userInfo', null)
           store.dispatch('setUserInfo', null)

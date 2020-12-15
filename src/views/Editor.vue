@@ -43,7 +43,14 @@ export default {
         title: this.inputTitle
       }
       this.http.post('/moment', data).then(res => {
-        console.log(res)
+        if (res.data.code == 0) {
+          this.$router.push({ path: '/' })
+          this.$message({
+            showClose: true,
+            message: '发表成功',
+            type: 'success'
+          })
+        }
       })
     }
   }
