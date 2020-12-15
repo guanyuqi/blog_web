@@ -10,15 +10,24 @@
           <p>{{ item.title }}</p>
         </div>
         <div class="moment-footer">
-          <div class="footer-item">
-            <i class="el-icon-time"></i>
-            <span>{{
-              item.createTime.replace('T0', ' ').replace('.000Z', '')
+          <!-- 标签 -->
+          <div class="footer-item label">
+            <span v-for="label in item.labels" :key="label.index">{{
+              label.name
             }}</span>
           </div>
+
+          <!-- 评论 -->
           <div class="footer-item">
             <i class="el-icon-chat-line-round"></i>
             <span>{{ item.commentCount }}</span>
+          </div>
+          <!-- 时间 -->
+          <div class="footer-item">
+            <i class="el-icon-time"></i>
+            <span>{{
+              item.createTime.replace('T', ' ').replace('.000Z', '')
+            }}</span>
           </div>
         </div>
       </div>
@@ -91,15 +100,37 @@ export default {
     }
   }
   .moment-footer {
-    @include flex-between-center;
+    @include flex-base-center;
     height: 40px;
-    width: 200px;
+
     .footer-item {
+      margin-right: 20px;
       color: $text-color-grey;
       @include flex-between-center;
       span {
         margin-left: 5px;
         font-size: 12px;
+      }
+    }
+    .label {
+      span {
+        display: inline-block;
+        padding: 2px 10px;
+        color: #fff;
+        border-radius: $radius;
+        margin-right: 10px;
+      }
+      span:nth-child(1) {
+        background-color: rgba($color: $theme-purple, $alpha: 0.8);
+      }
+      span:nth-child(2) {
+        background-color: rgba($color: $theme-yellow, $alpha: 0.8);
+      }
+      span:nth-child(3) {
+        background-color: rgba($color: $theme-green, $alpha: 0.8);
+      }
+      span:nth-child(4) {
+        background-color: rgba($color: $theme-red, $alpha: 0.8);
       }
     }
   }
