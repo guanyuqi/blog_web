@@ -12,7 +12,11 @@
           </div>
           <!-- 标题 -->
           <div class="moment-title">
-            <p>{{ item.title }}</p>
+            <router-link
+              :to="{ path: '/detail', query: { momentId: item.id } }"
+            >
+              <p>{{ item.title }}</p></router-link
+            >
           </div>
           <div class="moment-footer">
             <!-- 标签 -->
@@ -37,7 +41,7 @@
           </div>
         </div>
         <!-- 动态配图 -->
-        <div class="cover-img">
+        <div class="cover-img" v-if="item.coverImg">
           <img :src="item.coverImg" alt="" />
         </div>
       </div>
@@ -75,8 +79,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .momentList {
-  width: 1200px;
-
+  width: $type-area;
   margin: 0 auto;
 }
 .momentItem {
@@ -156,14 +159,11 @@ export default {
 
   /* 动态配图 */
   .cover-img {
-    height: 176px;
     img {
-      height: 100%;
+      height: 176px;
+      width: 176px;
+      object-fit: cover;
     }
   }
-}
-
-.test {
-  color: $theme-main;
 }
 </style>

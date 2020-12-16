@@ -24,15 +24,15 @@ html,
 body,
 #app {
   /* height: 100%; */
-  margin: 0;
-  padding: 0;
+
   position: relative;
   background-color: #f4f4f4;
 }
 a {
   text-decoration: none;
 }
-#app {
-  background-color: #f4f4f4;
+* {
+  margin: 0;
+  padding: 0;
 }
 </style>
