@@ -1,26 +1,35 @@
 <template>
   <div class="detail">
-    <!-- 内容容器 -->
-    <div class="detail-container">
-      <!-- 标题 -->
-      <h1 class="title">{{ articleDetail.title }}</h1>
-      <!-- 作者相关 -->
-      <div class="author" v-if="articleDetail">
-        <div class="avatar">
-          <img :src="articleDetail.user.avatar" alt="" />
-        </div>
-        <div class="author-info">
-          <p class="name">{{ articleDetail.user.name }}</p>
-          <p class="createTime">
-            {{
-              articleDetail.createTime.replace('T', ' ').replace('.000Z', '')
-            }}
-          </p>
-        </div>
+    <!-- 文章部分 -->
+    <div class="article-box">
+      <!-- 配图 -->
+      <div class="cover-img" v-if="articleDetail.coverImg">
+        <img :src="articleDetail.coverImg" alt="" />
       </div>
-      <!-- 文章内容 -->
-      <div class="article" v-html="articleDetail.content"></div>
+
+      <!-- 内容容器 -->
+      <div class="detail-container">
+        <!-- 标题 -->
+        <h1 class="title">{{ articleDetail.title }}</h1>
+        <!-- 作者相关 -->
+        <div class="author" v-if="articleDetail">
+          <div class="avatar">
+            <img :src="articleDetail.user.avatar" alt="" />
+          </div>
+          <div class="author-info">
+            <p class="name">{{ articleDetail.user.name }}</p>
+            <p class="createTime">
+              {{
+                articleDetail.createTime.replace('T', ' ').replace('.000Z', '')
+              }}
+            </p>
+          </div>
+        </div>
+        <!-- 文章内容 -->
+        <div class="article" v-html="articleDetail.content"></div>
+      </div>
     </div>
+
     <!-- 评论 -->
     <div class="comment">
       <!-- 发表评论 -->
@@ -51,9 +60,14 @@
             <p class="name">{{ item.user.name }}</p>
             <p class="content">{{ item.content }}</p>
             <div class="footer">
-              <span class="time">{{
-                item.createTime.replace('T', ' ').replace('.000Z', '')
-              }}</span>
+              <div class="footer-left">
+                <span class="time">{{
+                  item.createTime.replace('T', ' ').replace('.000Z', '')
+                }}</span>
+                <span class="delete" v-if="userInfo.id == item.user.id">
+                  · 删除</span
+                >
+              </div>
 
               <div class="reply"><i class="el-icon-chat-round"></i> 回复</div>
             </div>
@@ -127,55 +141,72 @@ export default {
   border-radius: $radius;
   padding-bottom: 200px;
 }
-/* 内容容器 */
-.detail-container {
-  background: #fff;
-  box-sizing: border-box;
-  padding: 40px 30px;
-  /* 标题 */
-  .title {
-    color: $text-color-title;
-  }
 
-  /* 作者相关 */
-  .author {
-    margin-top: 20px;
-    @include flex-base-center;
-    .avatar {
-      img {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-      }
-    }
-    .author-info {
-      margin-left: 10px;
-      p {
-        margin: 0;
-      }
-      .name {
-        color: $text-color-title;
-      }
-      .createTime {
-        margin-top: 10px;
-        font-size: 14px;
-        color: $text-color-grey;
-      }
+.article-box {
+  background-color: #fff;
+  border-radius: $radius;
+  overflow: hidden;
+  /* 配图 */
+  .cover-img {
+    overflow: hidden;
+    max-height: 250px;
+    img {
+      width: 100%;
+      /*  max-height: 230px; */
     }
   }
 
-  /* 文章内容 */
-  .article {
-    margin-top: 50px;
+  /* 内容容器 */
+  .detail-container {
+    box-sizing: border-box;
+    padding: 40px 30px;
+    /* 标题 */
+    .title {
+      color: $text-color-title;
+    }
+
+    /* 作者相关 */
+    .author {
+      margin-top: 20px;
+      @include flex-base-center;
+      .avatar {
+        img {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+        }
+      }
+      .author-info {
+        margin-left: 10px;
+        p {
+          margin: 0;
+        }
+        .name {
+          color: $text-color-title;
+        }
+        .createTime {
+          margin-top: 10px;
+          font-size: 14px;
+          color: $text-color-grey;
+        }
+      }
+    }
+
+    /* 文章内容 */
+    .article {
+      margin-top: 50px;
+    }
   }
 }
 
 /* 评论 */
 .comment {
-  background: #fff;
   margin-top: 50px;
-  box-sizing: border-box;
   padding: 40px 30px;
+  background: #fff;
+  border-radius: $radius;
+  box-sizing: border-box;
+
   /* 发表评论 */
   .submit-comment {
     height: 60px;
@@ -229,10 +260,19 @@ export default {
           @include flex-between;
           font-size: 14px;
           color: $text-color-grey;
-          .time {
-            font-size: 12px;
+          .footer-left {
+            .time {
+              font-size: 12px;
+            }
+            .delete {
+              display: none;
+              cursor: pointer;
+            }
           }
         }
+      }
+      .comment-main:hover .footer .delete {
+        display: inline;
       }
     }
   }
@@ -283,7 +323,7 @@ export default {
       white-space: pre;
       overflow-x: scroll;
       overscroll-behavior-x: contain;
-      margin: 20px 0;
+      margin: 20px 0 10px 0;
       border-radius: 4px;
       z-index: 0;
       padding: 1em;
@@ -297,7 +337,7 @@ export default {
     h3,
     h4,
     h5 {
-      margin: 50px 0 30px 0;
+      margin: 40px 0 20px 0;
       color: $text-color-title;
     }
 

@@ -47,7 +47,7 @@
       <div class="upload">
         <p>上传封面图</p>
         <el-upload
-          class="upload-demo"
+          class="upload-img"
           action="http://localhost:8000/upload/img"
           :headers="header"
           :on-preview="handlePreview"
@@ -67,7 +67,7 @@
 
       <!-- 提交 -->
       <div class="submit">
-        <el-button type="primary" @click="submit">主要按钮</el-button>
+        <el-button type="primary" @click="submit">发 布</el-button>
       </div>
     </div>
   </div>
@@ -221,6 +221,7 @@ export default {
     color: $text-color;
   }
   .label-list {
+    margin-top: 20px;
     .label-item {
       display: inline-block;
       margin-right: 20px;
@@ -253,6 +254,9 @@ export default {
   margin-top: 50px;
   p {
     color: $text-color;
+  }
+  .upload-img {
+    margin-top: 20px;
   }
 }
 
