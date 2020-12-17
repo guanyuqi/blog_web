@@ -35,7 +35,8 @@
       <!-- 发表评论 -->
       <div class="submit-comment">
         <div class="avatar" v-if="articleDetail">
-          <img :src="userInfo.avatar" alt="" />
+          <img v-if="userInfo" :src="userInfo.avatar" alt="" />
+          <img v-else src="@/assets/avatar_default.png" alt="" />
         </div>
         <div class="comment-input">
           <el-input
@@ -64,7 +65,11 @@
                 <span class="time">{{
                   item.createTime.replace('T', ' ').replace('.000Z', '')
                 }}</span>
-                <span class="delete" v-if="userInfo.id == item.user.id">
+
+                <span
+                  class="delete"
+                  v-if="userInfo && userInfo.id == item.user.id"
+                >
                   · 删除</span
                 >
               </div>
@@ -116,10 +121,14 @@ export default {
       })
     },
     submitComment() {
+      if (!this.userInfo) {
+        return this.$store.dispatch('loginDialog', true)
+      }
       let data = {
         momentId: this.momentId,
         content: this.commentInput
       }
+
       this.http.post(`/comment`, data).then(res => {
         console.log(res)
         this.$message({

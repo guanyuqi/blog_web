@@ -1,6 +1,8 @@
 <template>
   <div class="home">
+    <!-- 文章列表 -->
     <div class="momentList">
+      <p class="title">全部文章</p>
       <!-- 动态子项 -->
       <div class="momentItem" v-for="item in momentList" :key="item.index">
         <!-- 动态左侧内容 -->
@@ -46,6 +48,15 @@
         </div>
       </div>
     </div>
+    <!-- 面板 -->
+    <div class="panel">
+      <p class="title">全部标签</p>
+      <div class="label-list">
+        <span class="label-item" v-for="item in labelList" :key="item.index"
+          >{{ item.name }} [{{ item.count > 99 ? '99+' : item.count }}]</span
+        >
+      </div>
+    </div>
   </div>
 </template>
 
@@ -56,11 +67,13 @@ export default {
   name: 'Home',
   data() {
     return {
-      momentList: []
+      momentList: [],
+      labelList: []
     }
   },
   created() {
     this.getMoment()
+    this.getLabelList()
   },
   methods: {
     getMoment() {
@@ -73,96 +86,141 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    getLabelList() {
+      this.http.get('/label').then(res => {
+        this.labelList = res.data.data.result
+      })
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-.momentList {
+.home {
   width: $type-area;
   margin: 0 auto;
-}
-.momentItem {
-  padding: 10px 20px;
   margin-top: 20px;
-  box-sizing: border-box;
-  border-radius: $radius;
-  background-color: #fff;
-  @include flex-between;
+  @include flex-base;
+}
 
-  /* 动态左侧内容 */
-  .moment-info {
-    width: 600px;
+/* 文章列表 */
+.momentList {
+  flex: 1;
+  margin-right: 20px;
+  .title {
+    color: $text-color-title;
+    font-size: 18px;
+  }
+  .momentItem {
+    padding: 10px 20px;
+    margin-top: 20px;
+    box-sizing: border-box;
+    border-radius: $radius;
+    background-color: #fff;
     @include flex-between;
-    flex-direction: column;
-    /* 动态头部 */
-    .moment-head {
-      height: 40px;
-      @include flex-base-center;
-      img {
-        height: 30px;
-        width: 30px;
-        border-radius: 50%;
-      }
-      p {
-        margin-left: 10px;
-        color: $text-color;
-      }
-    }
-    /* 标题 */
-    .moment-title {
-      flex: 1;
-      line-height: 60px;
-      p {
-        font-weight: 600;
-        font-size: 18px;
-        color: $text-color-title;
-      }
-    }
-    /* 动态底部 */
-    .moment-footer {
-      @include flex-base-center;
-      height: 40px;
 
-      .footer-item {
-        margin-right: 20px;
-        color: $text-color-grey;
-        @include flex-between-center;
-        span {
-          margin-left: 5px;
-          font-size: 12px;
+    /* 动态左侧内容 */
+    .moment-info {
+      width: 600px;
+      @include flex-between;
+      flex-direction: column;
+      /* 动态头部 */
+      .moment-head {
+        height: 40px;
+        @include flex-base-center;
+        img {
+          height: 30px;
+          width: 30px;
+          border-radius: 50%;
+        }
+        p {
+          margin-left: 10px;
+          color: $text-color;
         }
       }
-      .label {
-        span {
-          display: inline-block;
-          padding: 2px 10px;
-          color: #fff;
-          border-radius: $radius;
-          margin-right: 10px;
+      /* 标题 */
+      .moment-title {
+        flex: 1;
+        line-height: 60px;
+        p {
+          font-weight: 600;
+          font-size: 18px;
+          color: $text-color-title;
         }
-        span:nth-child(1) {
-          background-color: rgba($color: $theme-purple, $alpha: 0.8);
+      }
+      /* 动态底部 */
+      .moment-footer {
+        @include flex-base-center;
+        height: 40px;
+
+        .footer-item {
+          margin-right: 20px;
+          color: $text-color-grey;
+          @include flex-between-center;
+          span {
+            margin-left: 5px;
+            font-size: 12px;
+          }
         }
-        span:nth-child(2) {
-          background-color: rgba($color: $theme-yellow, $alpha: 0.8);
+        .label {
+          span {
+            display: inline-block;
+            padding: 2px 10px;
+            color: #fff;
+            border-radius: $radius;
+            margin-right: 10px;
+          }
+          span:nth-child(1) {
+            background-color: rgba($color: $theme-purple, $alpha: 0.8);
+          }
+          span:nth-child(2) {
+            background-color: rgba($color: $theme-yellow, $alpha: 0.8);
+          }
+          span:nth-child(3) {
+            background-color: rgba($color: $theme-green, $alpha: 0.8);
+          }
+          span:nth-child(4) {
+            background-color: rgba($color: $theme-red, $alpha: 0.8);
+          }
         }
-        span:nth-child(3) {
-          background-color: rgba($color: $theme-green, $alpha: 0.8);
-        }
-        span:nth-child(4) {
-          background-color: rgba($color: $theme-red, $alpha: 0.8);
-        }
+      }
+    }
+
+    /* 动态配图 */
+    .cover-img {
+      img {
+        height: 176px;
+        width: 176px;
+        object-fit: cover;
       }
     }
   }
+}
 
-  /* 动态配图 */
-  .cover-img {
-    img {
-      height: 176px;
-      width: 176px;
-      object-fit: cover;
+/* 面板 */
+.panel {
+  width: 320px;
+  height: 800px;
+  /* background-color: #fff; */
+  p {
+    color: $text-color-title;
+    font-size: 18px;
+  }
+  .label-list {
+    background-color: #fff;
+    margin-top: 20px;
+    padding: 10px 10px;
+    border-radius: $radius;
+    .label-item {
+      margin: 6px;
+      display: inline-block;
+      padding: 2px 10px;
+      color: $text-color-title;
+      background: #e0e0e0;
+      border: 1px solid $border-color;
+      border-radius: $radius;
+      font-size: 14px;
+      cursor: pointer;
     }
   }
 }

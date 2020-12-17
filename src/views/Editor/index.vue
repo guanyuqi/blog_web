@@ -96,7 +96,7 @@ export default {
   computed: {
     header: function() {
       return {
-        Authorization: 'Bearer ' + this.$store.state.userInfo.token
+        Authorization: 'Bearer ' + /* this.$store.state.userInfo.token */ 123
       }
     }
   },
@@ -118,7 +118,7 @@ export default {
   },
   methods: {
     getLabelList() {
-      this.http.get('/label?limit=0&offset=10').then(res => {
+      this.http.get('/label').then(res => {
         this.labels = res.data.data.result
       })
     },
@@ -226,7 +226,7 @@ export default {
       display: inline-block;
       margin-right: 20px;
       padding: 5px 20px;
-      background-color: #e7e9f2;
+      background-color: #fff;
       color: $text-color;
       font-size: 14px;
       border: 1px solid $text-color-disable;

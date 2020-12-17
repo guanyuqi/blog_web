@@ -1,4 +1,5 @@
 const actions = {
+  /* 打开dialog */
   loginDialog(context, payload) {
     context.commit('loginDialog', payload)
   },
