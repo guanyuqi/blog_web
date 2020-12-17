@@ -9,7 +9,10 @@
       </div>
 
       <!-- 富文本编辑器 -->
-      <div class="editor-container" id="editor-container"></div>
+      <!-- <div class="editor-container" id="editor-container"></div> -->
+      <div class="editor-container">
+        <Tinymce :curValue="content" @input="test"></Tinymce>
+      </div>
 
       <!-- 标签选择 -->
       <div class="label">
@@ -67,6 +70,7 @@
 
       <!-- 提交 -->
       <div class="submit">
+        <el-button type="primary" @click="test">测 试</el-button>
         <el-button type="primary" @click="submit">发 布</el-button>
       </div>
     </div>
@@ -74,8 +78,12 @@
 </template>
 <script>
 import wangEditor from 'wangeditor'
+import Tinymce from '@/components/Tinymce'
 
 export default {
+  components: {
+    Tinymce
+  },
   data() {
     return {
       editor: null,
@@ -83,6 +91,7 @@ export default {
         title: '',
         content: '请输入'
       },
+      content: '',
       /* 标签 */
       labels: '',
       inputVisible: false,
@@ -137,6 +146,9 @@ export default {
           this.addMomentLabel(momentId)
         }
       })
+    },
+    test(data) {
+      console.log(data)
     },
     /* 标签相关 */
     showInput() {
