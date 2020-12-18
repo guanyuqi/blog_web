@@ -3,6 +3,7 @@ import store from '../store'
 //创建axios实例
 var service = axios.create({
   baseURL: 'http://localhost:8000',
+  /* baseURL: 'https://api.kanyaky.com:8000', */
   timeout: 50000
 })
 
