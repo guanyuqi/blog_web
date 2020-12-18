@@ -6,7 +6,7 @@
       <div class="momentList">
         <p class="title">全部文章</p>
         <!-- 动态子项 -->
-        <div class="momentItem" v-for="item in momentList" :key="item.index">
+        <div class="momentItem" v-for="(item,index) in momentList" :key="item.index">
           <!-- 动态左侧内容 -->
           <div class="moment-info">
             <!-- 动态头部 -->
@@ -14,27 +14,14 @@
               <img :src="item.auchor.avatar" alt />
               <p>{{ item.auchor.name }}</p>
             </div>
-            <!-- 标题 -->
+            <!-- 动态标题 -->
             <div class="moment-title wow animate__fadeInUp" data-wow-duration="1.5s">
               <router-link :to="{ path: '/detail', query: { momentId: item.id } }">
                 <p>{{ item.title }}</p>
               </router-link>
             </div>
+            <!-- 动态底部 -->
             <div class="moment-footer">
-              <!-- 标签 -->
-              <div class="footer-item label">
-                <span v-for="label in item.labels" :key="label.index">
-                  {{
-                  label.name
-                  }}
-                </span>
-              </div>
-
-              <!-- 评论 -->
-              <div class="footer-item">
-                <i class="el-icon-chat-line-round"></i>
-                <span>{{ item.commentCount }}</span>
-              </div>
               <!-- 时间 -->
               <div class="footer-item">
                 <i class="el-icon-time"></i>
@@ -44,11 +31,45 @@
                   }}
                 </span>
               </div>
+              <!-- 评论 -->
+              <div class="footer-item">
+                <i class="el-icon-chat-line-round"></i>
+                <span>{{ item.commentCount }}</span>
+              </div>
+              <!-- 标签 -->
+              <div class="footer-item label">
+                <span v-for="label in item.labels" :key="label.index">
+                  {{
+                  label.name
+                  }}
+                </span>
+              </div>
+
+              <!-- 删除 -->
+              <div class="footer-item delete" v-if="userInfo && userInfo.id == item.auchor.id">
+                <el-popconfirm title="你确定要删除文章吗？" @confirm="deleteMoment(item.id,index)">
+                  <el-button slot="reference" type="text">· 删除</el-button>
+                </el-popconfirm>
+              </div>
             </div>
           </div>
           <!-- 动态配图 -->
           <div class="cover-img" v-if="item.coverImg">
             <img :src="item.coverImg" alt />
+          </div>
+        </div>
+
+        <!-- 分页 -->
+        <div class="pagination">
+          <div class="pagination-body">
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page.sync="currentPage1"
+              :page-size="20"
+              layout="total, prev, pager, next"
+              :total="totleSize"
+            ></el-pagination>
           </div>
         </div>
       </div>
@@ -65,11 +86,7 @@
       </div>
     </div>
 
-    <div class="test">
-      <el-popconfirm title="这是一段内容确定删除吗？">
-        <el-button slot="reference">删除</el-button>
-      </el-popconfirm>
-    </div>
+    <div class="test"></div>
   </div>
 </template>
 
@@ -81,21 +98,31 @@ export default {
   data() {
     return {
       momentList: [],
-      labelList: []
+      labelList: [],
+      /* 分页相关 */
+      totleSize: '',
+      offset: 0,
+      pageSize: 20
+    }
+  },
+  computed: {
+    userInfo: function() {
+      return this.$store.state.userInfo
     }
   },
   created() {
     this.getMoment()
     this.getLabelList()
   },
-  mounted() {},
   methods: {
+    /* 获取数据 */
     getMoment() {
       this.http
-        .get('/moment?offset=0&size=20')
+        .get(`/moment?offset=${this.offset}&size=${this.pageSize}`)
         .then(res => {
           console.log(res)
           this.momentList = res.data.data.momentList
+          this.totleSize = res.data.data.count
         })
         .catch(err => {
           console.log(err)
@@ -105,6 +132,26 @@ export default {
       this.http.get('/label').then(res => {
         this.labelList = res.data.data.result
       })
+    },
+    /* 删除动态 */
+    deleteMoment(momentId, index) {
+      this.http.post('/moment/delete/' + momentId).then(res => {
+        console.log(res)
+        this.momentList.splice(index, 1)
+        this.$message({
+          showClose: true,
+          message: '删除动态成功',
+          type: 'success'
+        })
+      })
+    },
+    /* 分页相关 */
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`)
+    },
+    handleCurrentChange(val) {
+      this.offset = (val - 1) * this.pageSize
+      this.getMoment()
     }
   },
   watch: {
@@ -213,6 +260,14 @@ export default {
               background-color: rgba($color: $theme-red, $alpha: 0.8);
             }
           }
+          .delete {
+            display: none;
+          }
+        }
+        .moment-footer:hover .delete {
+          display: block;
+          animation: fadeIn;
+          animation-duration: 800ms;
         }
       }
 
@@ -223,6 +278,20 @@ export default {
           width: 176px;
           object-fit: cover;
         }
+      }
+    }
+
+    .pagination {
+      margin-top: 20px;
+
+      @include flex-base;
+      flex-direction: row-reverse;
+      .pagination-body {
+        background-color: #fff;
+        box-sizing: border-box;
+        padding: 10px;
+
+        border-radius: $radius;
       }
     }
   }
