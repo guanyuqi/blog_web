@@ -74,7 +74,7 @@
 </template>
 <script>
 import wangEditor from 'wangeditor'
-
+import hljs from 'highlight.js'
 export default {
   data() {
     return {
@@ -96,7 +96,7 @@ export default {
   computed: {
     header: function() {
       return {
-        Authorization: 'Bearer ' + /* this.$store.state.userInfo.token */ 123
+        Authorization: 'Bearer ' + this.$store.state.userInfo.token
       }
     }
   },
@@ -105,7 +105,7 @@ export default {
   },
   mounted() {
     const editor = new wangEditor(`#editor-container`)
-
+    editor.highlight = hljs
     editor.config.height = 500
     // 配置 onchange 回调函数，将数据同步到 vue 中
     editor.config.onchange = newHtml => {
