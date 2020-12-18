@@ -13,7 +13,7 @@
 
       <!-- 标签选择 -->
       <div class="label">
-        <p>请选择文章标签</p>
+        <p>请选择文章标签<span>(不选默认生活区)</span></p>
         <div class="label-list">
           <span
             class="label-item"
@@ -117,12 +117,15 @@ export default {
     this.editor = editor
   },
   methods: {
-    getLabelList() {
-      this.http.get('/label').then(res => {
-        this.labels = res.data.data.result
-      })
-    },
+    /* 发布 */
     submit() {
+      if (!this.articleForm.title || !this.articleForm.content) {
+        return this.$message({
+          showClose: true,
+          message: '标题和内容必填',
+          type: 'error'
+        })
+      }
       let data = this.articleForm
       data.coverImg = this.imgPath
       this.http.post('/moment', data).then(res => {
@@ -139,6 +142,11 @@ export default {
       })
     },
     /* 标签相关 */
+    getLabelList() {
+      this.http.get('/label').then(res => {
+        this.labels = res.data.data.result
+      })
+    },
     showInput() {
       this.inputVisible = true
       this.$nextTick(() => {
@@ -219,6 +227,10 @@ export default {
   margin-top: 50px;
   p {
     color: $text-color;
+    span {
+      font-size: 12px;
+      color: $text-color-grey;
+    }
   }
   .label-list {
     margin-top: 20px;
