@@ -73,15 +73,18 @@
           </div>
         </div>
       </div>
+
       <!-- 面板 -->
       <div class="panel">
-        <p class="title">全部标签</p>
-        <div class="label-list">
-          <span
-            class="label-item"
-            v-for="item in labelList"
-            :key="item.index"
-          >{{ item.name }} [{{ item.count > 99 ? '99+' : item.count }}]</span>
+        <div class="panel-body">
+          <p class="title">全部标签</p>
+          <div class="label-list">
+            <span
+              class="label-item"
+              v-for="item in labelList"
+              :key="item.index"
+            >{{ item.name }} [{{ item.count > 99 ? '99+' : item.count }}]</span>
+          </div>
         </div>
       </div>
     </div>
@@ -93,6 +96,7 @@
 <script>
 /* 引入wow.js */
 import { WOW } from 'wowjs'
+import { scrollTo } from '@/utils/public.js'
 export default {
   name: 'Home',
   data() {
@@ -152,6 +156,7 @@ export default {
     handleCurrentChange(val) {
       this.offset = (val - 1) * this.pageSize
       this.getMoment()
+      scrollTo('momentList')
     }
   },
   watch: {
@@ -185,7 +190,7 @@ export default {
     flex: 1;
     margin-right: 20px;
     .title {
-      color: $text-color-title;
+      color: $text-color-grey;
       font-size: 18px;
     }
     .momentItem {
@@ -299,27 +304,31 @@ export default {
   /* 面板 */
   .panel {
     width: 320px;
-    height: 800px;
-    /* background-color: #fff; */
-    p {
-      color: $text-color-title;
-      font-size: 18px;
-    }
-    .label-list {
-      background-color: #fff;
-      margin-top: 20px;
-      padding: 10px 10px;
-      border-radius: $radius;
-      .label-item {
-        margin: 6px;
-        display: inline-block;
-        padding: 2px 10px;
+
+    /* background-color: #ccc; */
+    .panel-body {
+      position: sticky;
+      top: 20px;
+      p {
         color: $text-color-title;
-        background: #e0e0e0;
-        border: 1px solid $border-color;
+        font-size: 18px;
+      }
+      .label-list {
+        background-color: #fff;
+        margin-top: 20px;
+        padding: 10px 10px;
         border-radius: $radius;
-        font-size: 14px;
-        cursor: pointer;
+        .label-item {
+          margin: 6px;
+          display: inline-block;
+          padding: 2px 10px;
+          color: $text-color-title;
+          background: #e0e0e0;
+          border: 1px solid $border-color;
+          border-radius: $radius;
+          font-size: 14px;
+          cursor: pointer;
+        }
       }
     }
   }

@@ -2,13 +2,16 @@
   <div id="app">
     <Header></Header>
     <router-view />
+    <BackToTop></BackToTop>
   </div>
 </template>
 <script>
 import Header from './components/Header'
+import BackToTop from './components/BackToTop'
 export default {
   components: {
-    Header
+    Header,
+    BackToTop
   },
   created() {
     let userInfo = JSON.parse(localStorage.getItem('userInfo'))
